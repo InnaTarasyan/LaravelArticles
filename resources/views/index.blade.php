@@ -8,7 +8,7 @@
     @foreach($articles as $article)
         <h3>{{ $article->title }}</h3>
         {{--<img src="{{$article->image}}" width="200" height="200"/>--}}
-        <p>{{ $article->description}}...... Read more </p>
+        <a href="/article/{{ $article->id }}" style="text-decoration: none; color:black"><p>{{ $article->description}}...... Read more </p></a>
         <br/>
     @endforeach
 </div>

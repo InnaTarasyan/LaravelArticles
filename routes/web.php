@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'App\Http\Controllers\BlogController@listAll');
+Route::get('/article/{id}', 'App\Http\Controllers\BlogController@article');
