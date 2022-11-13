@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,5 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\BlogController@listAll');
-Route::get('/article/{id}', 'App\Http\Controllers\BlogController@article');
+
+Route::controller(BlogController::class)->group(function () {
+    Route::get('/article/{id}', 'article');
+    Route::get('/', 'listAll');
+});
