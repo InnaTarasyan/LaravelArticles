@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use Illuminate\Support\Facades\Blade;
 
 class BlogController extends Controller
 {
@@ -17,5 +18,10 @@ class BlogController extends Controller
     {
         $article = Blog::find($id);
         return view('article')->with('article', $article);
+    }
+
+    public function test()
+    {
+        return Blade::render('Hello, {{ $name }}', ['name' => 'Inna Tarasyan']);
     }
 }
