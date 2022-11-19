@@ -14,7 +14,6 @@ use App\Http\Controllers\BlogController;
 |
 */
 
-
 Route::controller(BlogController::class)->group(function () {
     Route::get('/article/{id}', 'article');
     Route::get('/', 'listAll');
