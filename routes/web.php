@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +13,12 @@ use App\Http\Controllers\BlogController;
 |
 */
 
-Route::controller(BlogController::class)->group(function () {
-    Route::get('/article/{id}', 'article');
-    Route::get('/', 'listAll');
-    Route::get('/test', 'test');
+Route::get('/', function () {
+    return view('welcome');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';

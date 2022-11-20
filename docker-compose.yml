@@ -50,6 +50,16 @@ services:
     networks:
       app-network:
 
+  npm:
+    image: node:latest
+    container_name: npm
+    volumes:
+      - ./:/var/www
+    working_dir: /var/www
+    entrypoint: ['npm', '--no-bin-links']
+    networks:
+      app-network:
+
 #Volumes
 volumes:
   dbdata:
