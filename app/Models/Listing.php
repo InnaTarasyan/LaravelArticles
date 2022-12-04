@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Listing extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $guarded = [];
 
@@ -24,5 +25,18 @@ class Listing extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    /**
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'title'    => $this->title,
+            'company'  => $this->company,
+            'content'  => $this->content,
+            'location' => $this->location,
+        ];
     }
 }

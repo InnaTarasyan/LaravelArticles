@@ -17,6 +17,7 @@
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             <x-header></x-header>
+            <x-introduction></x-introduction>
             <!-- Page Content -->
             <main>
                 {{ $slot }}

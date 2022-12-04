@@ -1,6 +1,17 @@
 <x-app-layout>
     <section class="container px-5 py-12 mx-auto">
         <div class="mb-12">
+            <div class="flex-justify-center">
+                @foreach($tags as $index => $tag)
+                    <a href="{{ route('listings.index', ['tag' => $tag->slug]) }}"
+                       class="inline-block ml-4 tracking-wide text-xs font-medium title-font py-1 px-2
+                        border border-indigo-500 uppercase
+                        {{ $index %2 == 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800 ' }}"
+                    >{{ $tag->name }}</a>
+                @endforeach
+            </div>
+        </div>
+        <div class="mb-12">
             <h2 class="text-2xl font-medium text-gray-900 title-font px-4">All jobs found ({{ $listings->count() }})</h2>
         </div>
         <div class="-my-6">
