@@ -26,4 +26,9 @@ class ListingController extends Controller
 
        return view('listings.index', compact('listings', 'tags'));
     }
+
+    public function show(Listing $listing, Request $request)
+    {
+        return view('listings.show', compact('listing'));
+    }
 }
