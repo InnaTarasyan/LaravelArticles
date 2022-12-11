@@ -35,6 +35,7 @@
                             <b>Location: </b>{{ $listing->location }}<br>
                             <b>Company: </b>{{ $listing->company }}
                         </p>
+                        <a href="{{  route('listings.apply', $listing->slug)}}">Apply now</a>
                     </div>
                 </div>
             </div>
