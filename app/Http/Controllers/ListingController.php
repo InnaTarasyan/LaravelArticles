@@ -47,13 +47,12 @@ class ListingController extends Controller
         return redirect()->to($listing->apply_link);
     }
 
-    public function create()
-    {
-        return view('listings.create');
-    }
-
     public function store(Request $request)
     {
+        if($request->isMethod('get') ) {
+            return view('listings.create');
+        }
+
         // process the listing creation form
         $validationArray = [
             'title' => 'required',
