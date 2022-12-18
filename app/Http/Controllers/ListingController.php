@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListingController extends Controller
 {
@@ -16,14 +17,18 @@ class ListingController extends Controller
     {
         if ($request->has('s')) {
             $searchQuery = trim($request->get('s'));
-            $query = Listing::search($searchQuery);
-        } else {
-            $query = Listing::where('is_active', true)
-                ->with('tags')
+            $query = Listing::search($searchQuery)->paginate()->load('tags');
+        } else if($request->has('tag')){
+            $query = Listing::query()->where('is_active', true)->with('tags')
                 ->latest();
+
+            $tag = $request->get('tag');
+            $query = $query->whereHas('tags', function (Builder $builder) use ($tag) {
+                $builder->where('slug', $tag);
+            })->get();
         }
 
-        $listings = $query->where('is_active', true)->get();
+        $listings = $query;
 
         $tags = Tag::orderBy('name')
             ->get();
