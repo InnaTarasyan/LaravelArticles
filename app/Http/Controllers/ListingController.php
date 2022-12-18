@@ -17,18 +17,16 @@ class ListingController extends Controller
     {
         if ($request->has('s')) {
             $searchQuery = trim($request->get('s'));
-            $query = Listing::search($searchQuery)->paginate()->load('tags');
+            $listings = Listing::search($searchQuery)->paginate()->load('tags');
         } else if($request->has('tag')){
             $query = Listing::query()->where('is_active', true)->with('tags')
                 ->latest();
 
             $tag = $request->get('tag');
-            $query = $query->whereHas('tags', function (Builder $builder) use ($tag) {
+            $listings = $query->whereHas('tags', function (Builder $builder) use ($tag) {
                 $builder->where('slug', $tag);
             })->get();
         }
-
-        $listings = $query;
 
         $tags = Tag::orderBy('name')
             ->get();
