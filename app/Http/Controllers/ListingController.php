@@ -26,6 +26,8 @@ class ListingController extends Controller
             $listings = $query->whereHas('tags', function (Builder $builder) use ($tag) {
                 $builder->where('slug', $tag);
             })->get();
+        } else {
+            $listings = Listing::all();
         }
 
         $tags = Tag::orderBy('name')
