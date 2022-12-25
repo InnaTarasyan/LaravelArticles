@@ -15,8 +15,9 @@ class ListingController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->has('s')) {
-            $searchQuery = trim($request->get('s'));
+        $search = trim($request->get('s'));
+        if ($search) {
+            $searchQuery = $search;
             $listings = Listing::search($searchQuery)->paginate()->load('tags');
         } else if($request->has('tag')){
             $query = Listing::query()->where('is_active', true)->with('tags')
