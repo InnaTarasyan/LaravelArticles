@@ -58,7 +58,44 @@ class Telegram extends Command
 
                 foreach ($messages_Messages['messages'] as $message) {
                     if(array_key_exists('message', $message)) {
-                        $messagesArray[] = $message['message'];
+                        $link = '';
+                        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#',
+                            $message['message'], $matches);
+                        if (isset($matches[0])) {
+                            $link = $matches[0];
+                        }
+
+                        $data = [
+                            'date'        => date('m/d/Y H:i:s', $message['date']),
+                            'message'     => $message['message'],
+                            'link'        => $link,
+                            'views'       => $message['views'],
+                            'forwards'    => $message['forwards'],
+                            'post_author' => array_key_exists('post_author', $message) ? $message['post_author'] : null,
+                        ];
+
+                        $media = array_key_exists('media', $message) ? $message['media'] : null;
+                        if ($media) {
+                            if(array_key_exists('webpage', $media)) {
+                                $data['url'] = array_key_exists('url', $media['webpage']) ?
+                                    $media['webpage']['url'] : null;
+                                $data['title'] = array_key_exists('title', $media['webpage']) ?
+                                    $media['webpage']['title'] : null;
+                            }
+                        }
+
+                        if(!isset($data['url']) && isset($data['link'][0])) {
+                            $data['url'] = $data['link'][0];
+                        }
+
+                        if(!isset($data['title']) && isset($data['message'])) {
+                            $first = explode('.', $data['message']);
+                            if($first) {
+                                $data['title'] =  $first[0];
+                            }
+                        }
+
+                        $messagesArray[] = $data;
                     }
                 }
 
@@ -71,7 +108,7 @@ class Telegram extends Command
             } while (true);
         }
 
-        Log::channel('telegram')->info(implode('\r\n', $messagesArray));
+        Log::channel('telegram')->info(print_r($messagesArray, true));
 
         return 0;
     }
