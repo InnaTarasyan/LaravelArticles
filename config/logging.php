@@ -117,6 +117,13 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'telegram' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/telegram.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
     ],
 
 ];
