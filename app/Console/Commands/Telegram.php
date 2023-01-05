@@ -35,6 +35,7 @@ class Telegram extends Command
         $MadelineProto->start();
         $me = $MadelineProto->getSelf();
 
+        $messagesArray = [];
         if (!$me['bot']) {
             $channel = config('telegram.channel');
             $offset_id = 0;
@@ -57,7 +58,7 @@ class Telegram extends Command
 
                 foreach ($messages_Messages['messages'] as $message) {
                     if(array_key_exists('message', $message)) {
-                        Log::channel('telegram')->info($message['message']);
+                        $messagesArray[] = $message['message'];
                     }
                 }
 
@@ -69,6 +70,8 @@ class Telegram extends Command
                 sleep(2);
             } while (true);
         }
+
+        Log::channel('telegram')->info(implode('\r\n', $messagesArray));
 
         return 0;
     }
