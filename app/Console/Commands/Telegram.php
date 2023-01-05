@@ -65,6 +65,9 @@ class Telegram extends Command
                             $link = $matches[0];
                         }
 
+                        Log::info($message);
+                        Log::info('==========================');
+
                         $data = [
                             'date'        => date('m/d/Y H:i:s', $message['date']),
                             'message'     => $message['message'],
@@ -75,7 +78,15 @@ class Telegram extends Command
                         ];
 
                         $media = array_key_exists('media', $message) ? $message['media'] : null;
+
                         if ($media) {
+                            try {
+                               $MadelineProto->downloadToDir($media, public_path('images_list'));
+                               $data['image'] = public_path('images_list').'/'.$media['photo']['id'].'.jpg';
+                            } catch (\Exception $e) {
+
+                            }
+
                             if(array_key_exists('webpage', $media)) {
                                 $data['url'] = array_key_exists('url', $media['webpage']) ?
                                     $media['webpage']['url'] : null;
