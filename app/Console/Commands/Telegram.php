@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use App\Models\Listing;
+use Illuminate\Support\Str;
 
 class Telegram extends Command
 {
@@ -43,14 +45,15 @@ class Telegram extends Command
 
             do {
                 $messages_Messages = $MadelineProto->messages->getHistory([
-                    'peer' => $channel,
-                    'offset_id' => $offset_id,
+                    'peer'        => $channel,
+                    'offset_id'   => $offset_id,
                     'offset_date' => 0,
-                    'add_offset' => 0,
-                    'limit' => $limit,
-                    'max_id' => 0,
-                    'min_id' => 0,
-                    'hash' => 0 ]);
+                    'add_offset'  => 0,
+                    'limit'       => $limit,
+                    'max_id'      => 0,
+                    'min_id'      => 0,
+                    'hash'        => 0
+                ]);
 
                 if(!array_key_exists('messages', $messages_Messages)) {
                     break;
@@ -75,6 +78,7 @@ class Telegram extends Command
                             'views'       => $message['views'],
                             'forwards'    => $message['forwards'],
                             'post_author' => array_key_exists('post_author', $message) ? $message['post_author'] : null,
+                            'title'       => ''
                         ];
 
                         $media = array_key_exists('media', $message) ? $message['media'] : null;
@@ -105,6 +109,19 @@ class Telegram extends Command
                                 $data['title'] =  $first[0];
                             }
                         }
+
+                        Listing::create([
+                            'user_id'        => 1,
+                            'title'          => $data['title'],
+                            'slug'           => Str::slug($data['title']),
+                            'company'        => $data['post_author'],
+                            'location'       => 'Germany',
+                            'logo'           => array_key_exists('image', $data) ? $data['image'] : null,
+                            'is_highlighted' => false,
+                            'is_active'      => false,
+                            'content'        => $data['message'],
+                            'apply_link'     => array_key_exists('url', $data) ? $data['url'] : '',
+                        ]);
 
                         $messagesArray[] = $data;
                     }
