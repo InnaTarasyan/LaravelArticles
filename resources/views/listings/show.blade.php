@@ -20,7 +20,7 @@
             <div class="my-6">
                 <div class="flex flex-wrap md:flex-nowrap">
                     <div class="content w-full pr-4 leading-relaxed text-base">
-                        {!! nl2br($listing->content, true) !!}
+                        {!! $listing->content !!}
                     </div>
                 </div>
             </div>

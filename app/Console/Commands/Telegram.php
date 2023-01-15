@@ -119,7 +119,8 @@ class Telegram extends Command
                             'logo'           => array_key_exists('image', $data) ? $data['image'] : null,
                             'is_highlighted' => false,
                             'is_active'      => false,
-                            'content'        => $data['message'],
+                            'content'        => preg_replace('/\x{1F680}/u',"<br>",
+                                nl2br($data['message'], true)),
                             'apply_link'     => array_key_exists('url', $data) ? $data['url'] : '',
                         ]);
 
